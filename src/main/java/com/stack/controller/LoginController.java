@@ -17,7 +17,7 @@ import com.stack.service.LoginService;
 
 
 @RestController
-@CrossOrigin(allowedHeaders = {"*","/"},origins ={"*","/"})
+@CrossOrigin(allowedHeaders = { "*", "*/" }, origins = { "*", "*/" })
 @RequestMapping("/api")
 public class LoginController {
 	

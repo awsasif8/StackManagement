@@ -13,6 +13,7 @@ import com.stack.entity.User;
 import com.stack.exception.StockManagementException;
 import com.stack.respository.OrdersRepository;
 import com.stack.respository.UserRepository;
+import com.stack.utility.MailWithOTPService;
 
 
 @Service
@@ -24,10 +25,13 @@ public class PutOrderServiceImpl implements PutOrderService {
 	@Autowired
 	UserRepository userRepository;
 	
+	@Autowired
+	MailWithOTPService mailOtpService;
+	
 	
 	public PutOrderResponseDto addOrder(PutOrderDto putOrderDto) throws StockManagementException {
 		
-		String emailId = null;
+	//	String emailId = null;
 		
 		Orders orders = new Orders();
 		PutOrderResponseDto putRespone = new PutOrderResponseDto();
@@ -44,9 +48,6 @@ public class PutOrderServiceImpl implements PutOrderService {
 		{
 			int userId = putOrderDto.getUserId();
 			Optional<User> user = userRepository.findById(userId);
-			/*
-			 * if(user.isPresent()) { emailId = user.get().getEmail(); }
-			 */
 			putRespone.setMessage("order has been created");
 			putRespone.setStatus("SUCCESS");
 			putRespone.setStatusCode(200);
@@ -56,7 +57,7 @@ public class PutOrderServiceImpl implements PutOrderService {
 			String body = "Your Order with order id :"+orderData.getOrderId()+" is successful \n Total Price "+orderData.getTotalPrice();
 			String subject = "Trading App";
 			
-			//mailOtpService.sendEmail(user.get().getEmail(), subject, body);
+			mailOtpService.sendEmail(user.get().getEmail(), subject, body);
 			
 			return putRespone;
 		}else

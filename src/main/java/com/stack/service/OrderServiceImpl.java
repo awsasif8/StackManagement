@@ -2,16 +2,17 @@ package com.stack.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.stack.dto.OrderDto;
 import com.stack.dto.OrderResDto;
 import com.stack.entity.Orders;
 import com.stack.entity.Stock;
 import com.stack.respository.OrdersRepository;
 import com.stack.respository.StockRepository;
-import com.stack.dto.*;
 
 @Service
 public class OrderServiceImpl implements OrderService{
@@ -29,7 +30,8 @@ public class OrderServiceImpl implements OrderService{
 		List<OrderDto> orderDtoList = new ArrayList<>();
 		OrderResDto orderResDto = new OrderResDto();
 		for(Orders list  :orderList) {
-			Stock stock = stockRepository.findById(list.getStockId()).get();
+			Optional<Stock> stockOP = stockRepository.findById(list.getStockId());
+			Stock stock = stockOP.get();
 			OrderDto order = new OrderDto();
 			order.setOrderedDate(list.getOrderDate());
 			order.setQuantity(list.getQuantity());
